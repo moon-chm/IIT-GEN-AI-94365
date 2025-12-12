@@ -1,0 +1,60 @@
+{
+    "id": 2,
+    "products": [
+        {
+            "id": 144,
+            "title": "Cricket Helmet",
+            "price": 44.99,
+            "quantity": 4,
+            "total": 179.96,
+            "discountPercentage": 11.47,
+            "discountedTotal": 159.32,
+            "thumbnail": "https://cdn.dummyjson.com/products/images/sports-accessories/Cricket%20Helmet/thumbnail.png"
+        },
+        {
+            "id": 124,
+            "title": "iPhone X",
+            "price": 899.99,
+            "quantity": 4,
+            "total": 3599.96,
+            "discountPercentage": 8.03,
+            "discountedTotal": 3310.88,
+            "thumbnail": "https://cdn.dummyjson.com/products/images/smartphones/iPhone%20X/thumbnail.png"
+        },
+        {
+            "id": 148,
+            "title": "Golf Ball",
+            "price": 9.99,
+            "quantity": 4,
+            "total": 39.96,
+            "discountPercentage": 11.24,
+            "discountedTotal": 35.47,
+            "thumbnail": "https://cdn.dummyjson.com/products/images/sports-accessories/Golf%20Ball/thumbnail.png"
+        },
+        {
+            "id": 122,
+            "title": "iPhone 6",
+            "price": 299.99,
+            "quantity": 3,
+            "total": 899.97,
+            "discountPercentage": 19.64,
+            "discountedTotal": 723.22,
+            "thumbnail": "https://cdn.dummyjson.com/products/images/smartphones/iPhone%206/thumbnail.png"
+        },
+        {
+            "id": 110,
+            "title": "Selfie Lamp with iPhone",
+            "price": 14.99,
+            "quantity": 5,
+            "total": 74.95,
+            "discountPercentage": 19.87,
+            "discountedTotal": 60.06,
+            "thumbnail": "https://cdn.dummyjson.com/products/images/mobile-accessories/Selfie%20Lamp%20with%20iPhone/thumbnail.png"
+        }
+    ],
+    "total": 4794.8,
+    "discountedTotal": 4288.95,
+    "userId": 142,
+    "totalProducts": 5,
+    "totalQuantity": 20
+}
