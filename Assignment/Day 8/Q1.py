@@ -11,14 +11,6 @@ st.header("Chat Agent")
 
 @tool
 def weather(city):
-    """
-     This get_weather() function gets the current weather of given city.
-    If weather cannot be found, it returns 'Error'.
-    This function doesn't return historic or general weather of the city.
-
-    :param city: str input - city name
-    :returns current weather in json format or 'Error'  
-    """
     load_dotenv('.env.local')
     try:
         api_key = os.getenv("weather")
@@ -28,20 +20,25 @@ def weather(city):
         return json.dumps(weather)
     except:
         return "Error"
+
 @tool
 def calculator(expression):
-    """
-    This calculator function solves any arithmetic expression containing all constant values.
-    It supports basic arithmetic operators +, -, *, /, and parenthesis. 
-    
-    :param expression: str input arithmetic expression
-    :returns expression result as str
-    """
     try:
-        result=eval(expression)
+        result = eval(expression)
         return str(result)
     except:
-        print('Error')
+        return "Error"
+
+@tool
+def read_file(filename: str) -> str:
+    try:
+        if not os.path.exists(filename):
+            return f'error: File {filename} not found.'
+        with open(filename, 'r', encoding='utf-8') as f:
+            content = f.read()
+            return content
+    except Exception as e:
+        return f"error reading file: {str(e)}"
 
 llm = init_chat_model(
     model='google/gemma-3-4b',
