@@ -125,7 +125,7 @@ def shortlist_resumes():
                 - **Resume:** {source}
                 - **Relevance Score:** `{round(score, 4)}`
                 - **Matched Content:**  
-                  {doc.page_content[:300]}...
+                  {doc.page_content[:190]}...
                 """
             )
             st.divider()
@@ -163,6 +163,77 @@ def list_resumes():
     for i, name in enumerate(resume_names, start=1):
         st.write(f"{i}. {name}")
 
+def update_resume():
+    st.header("Update the Uploaded Resume")
+    resume_name = st.text_input("Enter Resume Name")
+
+    embed_model = init_embeddings(
+        model="text-embedding-nomic-embed-text-v1.5-embedding",
+        provider="openai",
+        base_url="http://127.0.0.1:1234/v1",
+        api_key="none",
+        check_embedding_ctx_length=False
+    )
+
+    vectordb = Chroma(
+        persist_directory="./chroma_db",
+        embedding_function=embed_model
+    )
+
+    if st.button("Search Resume"):
+        if not resume_name:
+            st.warning("Please enter a resume name")
+            return
+
+        data = vectordb.get(
+            include=["metadatas"],
+            where={"source": resume_name}   
+        )
+
+        if not data or not data.get("metadatas"):
+            st.info("No resumes found")
+        else:
+            st.success(f"Found resume: {resume_name}")
+            if st.button("Update resume"):
+                vectordb.delete(where={"source": resume_name})
+                vectordb.persist()
+                st.warning("Resume Deleted!")
+                resume_file = st.file_uploader("Browse PDF", type="pdf")
+
+                if resume_file:
+                    with tempfile.NamedTemporaryFile(delete=False, suffix=".pdf") as tmp:
+                     tmp.write(resume_file.read())
+                     tmp_path = tmp.name
+
+                    loader = PyPDFLoader(tmp_path)
+                    pages = loader.load()
+
+                    splitter = RecursiveCharacterTextSplitter(
+                        chunk_size=500,
+                        chunk_overlap=100
+                    )
+
+                    documents = []
+                    for page in pages:
+                        chunks = splitter.split_text(page.page_content)
+                        for chunk in chunks:
+                            documents.append(
+                                Document(
+                                    page_content=chunk,
+                                    metadata={"source": resume_file.name}
+                                )
+                            )
+
+                    vectordb = Chroma(
+                        persist_directory="./chroma_db",
+                        embedding_function=embed_model
+                    )
+
+                    vectordb.add_documents(documents)
+                    vectordb.persist()
+
+                    st.success(f"Resume '{resume_file.name}' uploaded and indexed successfully!")
+
 
 # ------------------ Sidebar ------------------
 with st.sidebar:
@@ -196,3 +267,6 @@ elif st.session_state.page == "Shortlist Resumes":
 
 elif st.session_state.page == "List All Resumes":
     list_resumes()
+
+elif st.session_state.page == "Update Resume":
+    update_resume()
