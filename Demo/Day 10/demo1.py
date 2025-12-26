@@ -17,6 +17,6 @@ print("document saved")
 results = collection.query(
     query_texts=["What is Ai?"],
     n_results=2
-)
+) 
 
 print("Search result:", results["documents"])
